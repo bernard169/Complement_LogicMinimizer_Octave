@@ -23,32 +23,32 @@ F = dlmread ('etape5.cubes')
 result6= Complement (F, 3)
 
 #test 6
-G = dlmread ('function1.cubes')
-Gsol = dlmread ('function1comp.cubes')
+G = dlmread ('function1.cubes');
+Gsol = dlmread ('function1comp.cubes');
 tic()
 result7 = Complement (G, 6)
 executionTimef1 = toc ()
 Ok1 = IsSameFunction (result7, Gsol,6)
 
 #test 7
-H = dlmread ('function2.cubes')
-Hsol = dlmread ('function2comp.cubes')
+H = dlmread ('function2.cubes');
+Hsol = dlmread ('function2comp.cubes');
 tic ()
 result8 = Complement (H,5)
 executionTimef2 = toc ()
 Ok2 = IsSameFunction (result8, Hsol, 5)
 
 #test 8 
-I = dlmread ('function3.cubes')
-Isol = dlmread ('function3comp.cubes')
+I = dlmread ('function3.cubes');
+Isol = dlmread ('function3comp.cubes');
 tic ();
 result9= Complement (I,6)
 executionTimef3 = toc()
 Ok3 = IsSameFunction (result9, Isol, 6)
 
 #test 9 
-J = dlmread ('function4.cubes')
-Jsol = dlmread ('function4comp.cubes')
+J = dlmread ('function4.cubes');
+Jsol = dlmread ('function4comp.cubes');
 tic ();
 result10 = Complement (J, 6)
 executionTimef4 = toc()

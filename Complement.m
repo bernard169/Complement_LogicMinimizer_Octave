@@ -3,6 +3,7 @@ function [compF] = Complement (cubeList, nbrVar)
  index = 0;
  positiveCofactor = [];
  negativeCofactor = [];
+ nOfCubes = rows (cubeList);
   #Check if cubeList is empty; if that's the case, its complement is 
   #an all don't care cube
  if(length (cubeList) == 0)
@@ -13,9 +14,9 @@ function [compF] = Complement (cubeList, nbrVar)
  endif
  #Check weither there is an all don't care cube in the cubeList
  #if it's the case, complement is 0
- for cubeIndex = 1 : rows (cubeList)
+ for cubeIndex = 1 : nOfCubes
    allDontCareCube = 1;
-   for varIndex = 1 : columns (cubeList)
+   for varIndex = 1 : nbrVar
      if (cubeList (cubeIndex, varIndex) != 3)
        allDontCareCube = 0;
      endif
@@ -27,8 +28,8 @@ function [compF] = Complement (cubeList, nbrVar)
  endfor
  
  #If cubeList contains only one cube, demorgan rule can be applied
- if (rows(cubeList) == 1)
-   for varIndex = 1 : columns (cubeList)
+ if (nOfCubes == 1)
+   for varIndex = 1 : nbrVar
      demorganCube = 3* ones(1, nbrVar);
      if (cubeList (1, varIndex) == 3) #if variable is not "there" (don't care) 
        demorganCube = [];             #demorgan cube is empty
@@ -37,20 +38,18 @@ function [compF] = Complement (cubeList, nbrVar)
      elseif (cubeList (1,varIndex) == 1)
        demorganCube (1,varIndex) = 2;
      endif
-     compF = [compF; demorganCube];
+     compF = [compF; demorganCube];   #append with demorganCube
    endfor
    return;
 
-else
-###################### Try to simplify the function ############################
-  
-
+ else
+######################## Try to simplify cubeList ##############################
 
 ###################### Determine which variable to use #########################
   chosenVar = 0;                    
   mostBalancedVar = -1;
   balancesVariables = [];
-  for varIndex = 1 : columns (cubeList) #find most balanced binate
+  for varIndex = 1 : nbrVar #find most balanced binate
     variable = cubeList (:, varIndex);
     negated = 0;
     nonNegated = 0;
@@ -77,7 +76,7 @@ else
   else #function is unate
     appearencesVar = [];
     potVars = [];
-    for varIndex = 1 : columns (cubeList) #choose the variable that appears in the most cubes
+    for varIndex = 1 : nbrVar #choose the variable that appears in the most cubes
       variable = cubeList (:, varIndex);
       appearences = length (variable);
       for cubeIndex = 1 : length(variable) 
@@ -95,7 +94,7 @@ else
   endif    
 ################## then, compute cofactor of this variable #####################
   
-  for cubeIndex = 1 : rows (cubeList)
+  for cubeIndex = 1 : nOfCubes
     if (cubeList (cubeIndex, chosenVar) == 1)
       cube = cubeList (cubeIndex, :);
       cube (chosenVar) = 3;
