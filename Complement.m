@@ -114,18 +114,18 @@ function [compF] = Complement (cubeList, nbrVar)
   P = Complement (P, nbrVar); 
   N = Complement (N, nbrVar);
  
-  if (columns(P) == 0)    #when applying complement to the cofactor, it might 
-    N (:, chosenVar) = 2; #return an empty list (if there is an all don't care  
-    compF = N;            #cube) in which case, the concerned cofactor can be 
-  elseif (columns(N) ==0) #removed
+  if (columns(P) == 0 && columns(N) !=0)    #when applying complement to the cofactor, it might 
+    N (:, chosenVar) = 2;                   #return an empty list (if there is an all don't care  
+    compF = N;                              #cube) in which case, the concerned cofactor can be 
+  elseif (columns(N) ==0 && columns(P) !=0) #removed
     P (:, chosenVar) = 1;
     compF = P;
+  elseif (columns(N)==0 && columns(P) ==0)
+    compF = [];
   else 
     P (:, chosenVar) = 1;
     N (:, chosenVar) = 2;
-      if (columns(P) == columns(N))
-        compF = [P; N];
-      endif
+    compF = [P; N];
   endif
   
  endif
