@@ -1,4 +1,4 @@
-function [compF, index, positiveCofactor, negativeCofactor] = Complement (cubeList, nbrVar)
+function [compF] = Complement (cubeList, nbrVar)
  compF=[];
  index = 0;
  positiveCofactor = [];
@@ -90,6 +90,7 @@ function [compF, index, positiveCofactor, negativeCofactor] = Complement (cubeLi
     chosenVar = potVars(min(find(varAppearences== max (varAppearences))), 2); #chose the first variable that has the biggest number of appearences
   endif    
 ################## then, compute cofactor of this variable #####################
+  
   for cubeIndex = 1 : length (cubeList (:,1))
     if (cubeList (cubeIndex, chosenVar) == 1)
       cube = cubeList (cubeIndex, :);
@@ -106,7 +107,26 @@ function [compF, index, positiveCofactor, negativeCofactor] = Complement (cubeLi
       positiveCofactor = [positiveCofactor ; cube];
     endif
   endfor
- endif
 
-   
+################# Apply Shannon's expansion -> Complement ###################### 
+  P = positiveCofactor;
+  N = negativeCofactor;
+  P = Complement (P, nbrVar); 
+  N = Complement (N, nbrVar);
+ 
+  if (columns(P) == 0)    #when applying complement to the cofactor, it might 
+    N (:, chosenVar) = 2; #return an empty list (if there is an all don't care  
+    compF = N;            #cube) in which case, the concerned cofactor can be 
+  elseif (columns(N) ==0) #removed
+    P (:, chosenVar) = 1;
+    compF = P;
+  else 
+    P (:, chosenVar) = 1;
+    N (:, chosenVar) = 2;
+      if (columns(P) == columns(N))
+        compF = [P; N];
+      endif
+  endif
+  
+ endif
 endfunction 
