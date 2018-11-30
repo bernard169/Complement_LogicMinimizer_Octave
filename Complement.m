@@ -13,9 +13,9 @@ function [compF] = Complement (cubeList, nbrVar)
  endif
  #Check weither there is an all don't care cube in the cubeList
  #if it's the case, complement is 0
- for cubeIndex = 1 : length (cubeList (:, 1))
+ for cubeIndex = 1 : rows (cubeList)
    allDontCareCube = 1;
-   for varIndex = 1 : length (cubeList (1, :))
+   for varIndex = 1 : columns (cubeList)
      if (cubeList (cubeIndex, varIndex) != 3)
        allDontCareCube = 0;
      endif
@@ -27,8 +27,8 @@ function [compF] = Complement (cubeList, nbrVar)
  endfor
  
  #If cubeList contains only one cube, demorgan rule can be applied
- if (length (cubeList(:, 1)) == 1)
-   for varIndex = 1 : length (cubeList(1,:))
+ if (rows(cubeList) == 1)
+   for varIndex = 1 : columns (cubeList)
      demorganCube = 3* ones(1, nbrVar);
      if (cubeList (1, varIndex) == 3) #if variable is not "there" (don't care) 
        demorganCube = [];             #demorgan cube is empty
@@ -40,13 +40,17 @@ function [compF] = Complement (cubeList, nbrVar)
      compF = [compF; demorganCube];
    endfor
    return;
- 
- else
-################### first, determine which variable to use #####################
+
+else
+###################### Try to simplify the function ############################
+  
+
+
+###################### Determine which variable to use #########################
   chosenVar = 0;                    
   mostBalancedVar = -1;
   balancesVariables = [];
-  for varIndex = 1 : length (cubeList(1,:)) #find most balanced binate
+  for varIndex = 1 : columns (cubeList) #find most balanced binate
     variable = cubeList (:, varIndex);
     negated = 0;
     nonNegated = 0;
@@ -73,7 +77,7 @@ function [compF] = Complement (cubeList, nbrVar)
   else #function is unate
     appearencesVar = [];
     potVars = [];
-    for varIndex = 1 : length (cubeList(1,:)) #choose the variable that appears in the most cubes
+    for varIndex = 1 : columns (cubeList) #choose the variable that appears in the most cubes
       variable = cubeList (:, varIndex);
       appearences = length (variable);
       for cubeIndex = 1 : length(variable) 
@@ -91,7 +95,7 @@ function [compF] = Complement (cubeList, nbrVar)
   endif    
 ################## then, compute cofactor of this variable #####################
   
-  for cubeIndex = 1 : length (cubeList (:,1))
+  for cubeIndex = 1 : rows (cubeList)
     if (cubeList (cubeIndex, chosenVar) == 1)
       cube = cubeList (cubeIndex, :);
       cube (chosenVar) = 3;
