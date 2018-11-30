@@ -26,4 +26,22 @@ result6= Complement (F, 3)
 G = dlmread ('function1.cubes')
 Gsol = dlmread ('function1comp.cubes')
 result7 = Complement (G, 6)
-#result7 == Gsol
+Ok1 = IsSameFunction (result7, Gsol,6)
+
+#test 7
+H = dlmread ('function2.cubes')
+Hsol = dlmread ('function2comp.cubes')
+result8 = Complement (H,5)
+Ok2 = IsSameFunction (result8, Hsol, 5)
+
+#test 8 
+I = dlmread ('function3.cubes')
+Isol = dlmread ('function3comp.cubes')
+result9= Complement (I,6)
+Ok3 = IsSameFunction (result9, Isol, 6)
+
+#test 9 
+J = dlmread ('function4.cubes')
+Jsol = dlmread ('function4comp.cubes')
+result10 = Complement (J, 6)
+Ok4 = IsSameFunction (result10, Jsol, 6)
